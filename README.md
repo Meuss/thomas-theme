@@ -2,10 +2,13 @@
 
 -   generate theme info in style.css
 -   custom image sizes
+-   wpack.io
+-   backend styles for custom blocks
+-   HMR
 
 ## Features
 
--   disable comments
+-   TODO
 
 ## Installation
 
@@ -29,7 +32,7 @@ Clone into your themes, change the folder name to your template.
 
 -   Disable comments
 -   ACF Pro
--   WPML ?
+-   (WPML ?)
 
 ### Available CLI commands
 
