@@ -1,4 +1,4 @@
-# Todo
+## Todo
 
 -   generate theme info in style.css
 -   custom image sizes
