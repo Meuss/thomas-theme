@@ -120,7 +120,7 @@ require get_template_directory() . '/inc/template-functions.php';
 // =====================================================
 // My custom ACF thomas_themes
 // =====================================================
-
+// registering my own Blocks
 add_action('acf/init', 'register_my_acf_block_types');
 function register_my_acf_block_types() {
 	if( function_exists('acf_register_block_type') ) {
@@ -132,19 +132,39 @@ function register_my_acf_block_types() {
 			'category'          => 'formatting',
 			'icon'              => 'admin-comments',
 			'keywords'          => array( 'example', 'quote' ),
+			'example'  					=> array(
+				'attributes' => array(
+					'mode' => 'preview',
+					'data' => array(
+						'preview_image_help' => get_template_directory_uri().'/template-parts/blocks/example/example.png',
+					)
+				)
+			)
 		));
 	}
 }
+// removing core patterns
+add_action('init', function() {
+    remove_theme_support('core-block-patterns');
+}, 9);
+// =======================================================
+// Gutenberg scripts and styles
+// https://www.billerickson.net/block-styles-in-gutenberg
+// https://www.billerickson.net/how-to-remove-core-wordpress-blocks/
+// =======================================================
+function my_gutenberg_scripts() {
+	wp_enqueue_script( 'theme-editor-js', get_template_directory_uri() . '/assets/js/editor.js', array( 'wp-blocks', 'wp-dom' ), filemtime( get_template_directory() . '/assets/js/editor.js' ), true );
+	wp_enqueue_style( 'theme-editor-css', get_template_directory_uri() . '/assets/css/editor.css', filemtime( get_template_directory() . '/assets/css/editor.css' ), true );
+}
+add_action( 'enqueue_block_editor_assets', 'my_gutenberg_scripts' );
 
-add_action('admin_head', 'custom_block_styles');
-function custom_block_styles() {
-  echo '<style>
-    .testimonial-blockquote {
-			min-height: 200px;
-			background-size: cover;
-			background-position: center;
-			padding: 20px;
-			color: white;
-		}
-  </style>';
+add_filter( 'allowed_block_types', 'thomas_theme_allowed_block_types' );
+function thomas_theme_allowed_block_types( $allowed_blocks ) {
+	return array(
+		'core/image',
+		'core/paragraph',
+		'core/heading',
+		'core/list',
+		'acf/example',
+	);
 }
